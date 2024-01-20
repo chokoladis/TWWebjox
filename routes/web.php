@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -34,30 +35,33 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::middleware('rights')->group(function () { // for editors //todo rights
+    Route::middleware('right.adminPanel')->group(function () { // for editors
 
         Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 
         Route::prefix('admin')->group(function () {
 
-            Route::get('/post/', [AdminController::class, 'post'])->name('admin.post.index');
-            Route::get('/post/{post}/edit', [AdminController::class, 'postEdit'])->name('admin.post.edit');
-            Route::post('/post/{post}/update', [AdminController::class, 'postUpdate'])->name('admin.post.update');
+            Route::get('/post/', [AdminPostController::class, 'index'])->name('admin.post.index');
+            Route::get('/post/{post}/edit', [AdminPostController::class, 'edit'])->name('admin.post.edit');
+            Route::post('/post/{post}/update', [AdminPostController::class, 'update'])->name('admin.post.update');
 
-            // for admin
-            Route::get('/post/create', [AdminController::class, 'postsCreate'])->name('admin.post.create');
-            Route::post('/post/store', [AdminController::class, 'postsStore'])->name('admin.post.store');
-            
-            
-            // Route::get('/file/', [FileController::class, 'index'])->name('file.index');
-            Route::get('/file/upload-file', [FileController::class, 'create'])->name('file.create');
-            Route::post('/file/upload-file', [FileController::class,'store'])->name('file.store');
-            // Route::get('/file/{file}/', [FileController::class, 'detail'])->name('file.detail');
 
-            // Route::get('/category/', [CategoryController::class, 'index'])->name('category.index');
-            // Route::get('/category/add', [CategoryController::class, 'create'])->name('category.create');
-            // Route::post('/category/add', [CategoryController::class, 'store'])->name('category.store');
-            // Route::get('/category/{category}', [CategoryController::class, 'detail'])->name('category.detail');
+            Route::middleware('right.root')->group(function () { // for admins-root
+                
+                Route::get('/post/create', [AdminPostController::class, 'create'])->name('admin.post.create');
+                Route::post('/post/store', [AdminPostController::class, 'store'])->name('admin.post.store');
+                
+                
+                // Route::get('/file/', [FileController::class, 'index'])->name('file.index');
+                Route::get('/file/upload-file', [FileController::class, 'create'])->name('file.create');
+                Route::post('/file/upload-file', [FileController::class,'store'])->name('file.store');
+                // Route::get('/file/{file}/', [FileController::class, 'detail'])->name('file.detail');
+
+                // Route::get('/category/', [CategoryController::class, 'index'])->name('category.index');
+                // Route::get('/category/add', [CategoryController::class, 'create'])->name('category.create');
+                // Route::post('/category/add', [CategoryController::class, 'store'])->name('category.store');
+                // Route::get('/category/{category}', [CategoryController::class, 'detail'])->name('category.detail');
+            });
         });
         
     });

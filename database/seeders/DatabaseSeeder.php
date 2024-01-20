@@ -22,10 +22,10 @@ class DatabaseSeeder extends Seeder
         //     ['name' => 'editor',]
         // ]);
         
-        // \App\Models\Category::factory()->create([
-        //     ['name' => 'cat'],
-        //     ['name' => 'dog']
-        // ]);
+        \App\Models\Category::factory()->create([
+            ['name' => 'cat'],
+            ['name' => 'dog']
+        ]);
 
         // \App\Models\User::factory(10)->create();
 

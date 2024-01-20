@@ -49,6 +49,10 @@ class User extends Authenticatable
         return $this->hasOne(Right::class, 'id', 'right_id'); //right_id
     }
 
+    public function isGuest(){
+        return $this->right->name == 'guest' ? true : false;
+    }
+
     public function isAdmin(){
         return $this->right->name == 'admin' ? true : false;
     }
