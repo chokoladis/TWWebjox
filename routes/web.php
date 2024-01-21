@@ -2,10 +2,9 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use app\Http\Controllers\FileController;
+use app\Http\Controllers\ADmin\FileController;
 use App\Http\Controllers\PostController;
 
 /*
@@ -50,7 +49,6 @@ Route::middleware('auth')->group(function () {
                 
                 Route::get('/post/create', [AdminPostController::class, 'create'])->name('admin.post.create');
                 Route::post('/post/store', [AdminPostController::class, 'store'])->name('admin.post.store');
-                
                 
                 // Route::get('/file/', [FileController::class, 'index'])->name('file.index');
                 Route::get('/file/upload-file', [FileController::class, 'create'])->name('file.create');

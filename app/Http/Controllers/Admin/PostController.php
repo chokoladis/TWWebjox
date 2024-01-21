@@ -27,8 +27,9 @@ class PostController extends Controller
         try {
             $fileController = new FileController();
             if ($fileMoodel = $fileController->store($request, 'preview')){
-                // dump($fileMoodel);
                 $data = $request->validated();
+                unset($data['preview']);
+                $data['active'] = $data['active'] ?? 0;
                 $data = array_merge($data,['file_id' => $fileMoodel->id]);
 
                 if (Post::create($data)){
@@ -42,12 +43,10 @@ class PostController extends Controller
                 $msg = __('Ошибка загрузки превью');
                 Session::flash('alert-class', 'alert-danger');
             }
-            
-            // dd($msg);
 
             Session::flash('msg', $msg);
             $posts = Post::all();
-            return route('admin.post.index', compact('posts'));
+            return redirect()->route('admin.post.index', compact('posts'));
 
         } catch (\Throwable $th) {
             throw $th;

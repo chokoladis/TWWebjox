@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class FileController extends Controller
 {
+    static $mainDir = '/storage/';
     /**
      * Display a listing of the resource.
      */
@@ -40,16 +41,17 @@ class FileController extends Controller
     }
 
     public function UploadFile(UploadedFile $file, string $folder, $filename = ''){
-        
-        $destinationPath = public_path().'/storage/'.$folder.'/';
-        if (!is_dir($destinationPath))
-            mkdir($destinationPath, 0755);
+        $root = public_path() . self::$mainDir;
+        $destinationPath = $folder.'/';
+        if (!is_dir($root.$destinationPath))
+            mkdir($root.$destinationPath, 0755);
 
-        $hashName = Hash::make(mb_substr($file->getClientOriginalName(),0,6).auth()->user()->id);
+        $hashName = md5(mb_substr($file->getClientOriginalName(),0,6).auth()->user()->id);
         $fileName = date('dmYH') . "_". $hashName .".". $file->getClientOriginalExtension();
         
-        if (!file_exists(public_path($destinationPath.$fileName))){
-            if ($file->move($destinationPath, $fileName)){
+        // dd($root.$destinationPath.$fileName);
+        if (!file_exists($root.$destinationPath.$fileName)){
+            if ($file->move($root.$destinationPath, $fileName)){
                 return ['name' => $fileName, 'path' => $destinationPath.$fileName];
             } else {
                 return [];

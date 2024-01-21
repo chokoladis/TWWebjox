@@ -24,7 +24,8 @@ class StoreRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:70'],
-            'category' => ['integer'],
+            'detail' => ['required', 'string'],
+            'category_id' => ['integer'],
             'preview' => ['image', 'max:4096', 'mimes:jpg,png,jpeg,gif,svg'],
             // 'file' => File::image()->max(4096),
             // ['image', 'max:4096', 'mimes:jpg,png,jpeg,gif,svg'],

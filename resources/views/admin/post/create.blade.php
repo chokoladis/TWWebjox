@@ -6,6 +6,9 @@
         </h2>
     </x-slot>
 
+    @if(Session::has('msg'))
+        <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('msg') }}</p>
+    @endif
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <form action="{{ route('admin.post.store')}}" method="POST" enctype="multipart/form-data">
@@ -15,6 +18,11 @@
                     <x-input-label for="title" :value="__('Title')" />
                     <x-text-input id="title" name="title" type="test" class="mt-1 block w-full" :value="old('title')" required autocomplete="on" />
                     <x-input-error class="mt-2" :messages="$errors->get('title')" />
+                </div>
+                
+                <div>
+                    <textarea name="detail" cols="30" rows="10">{{ old('detail') }}</textarea>
+                    <x-input-error class="mt-2" :messages="$errors->get('detail')" />
                 </div>
                 
                 <div>
